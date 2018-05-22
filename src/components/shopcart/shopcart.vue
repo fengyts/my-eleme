@@ -59,7 +59,6 @@ export default {
     },
     /** 配送描述计算 */
     payDesc() {
-      console.log(this.minPrice);
       if (this.totalPrice === 0) {
         return `￥${this.minPrice}元起送`; //es6新语法: ``里面可以通过${}传入参数然后返回为字符串
       } else if (this.totalPrice < this.minPrice) {
