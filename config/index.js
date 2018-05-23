@@ -3,6 +3,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
+const apiPath = process.env.API_ROOT;
 
 module.exports = {
   dev: {
@@ -10,7 +11,10 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      target: apiPath,
+      changeOrigin: true
+    },
 
     // Various Dev Server settings
     // host: 'localhost', // can be overwritten by process.env.HOST
@@ -44,10 +48,11 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
+     * 是否允许调试
      */
 
     productionSourceMap: true,
