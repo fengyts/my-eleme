@@ -20,7 +20,7 @@
 <script type="text/ecmascript-6">
 import header from "./components/header/header";
 
-const ERR_OK = 0;
+const ERR_OK = 1;
 
 export default {
   name: "App",
@@ -30,9 +30,8 @@ export default {
     };
   },
   created() {
-    this.$http.get("/api/seller", {responseType:'json'}).then(response => {
-      // response = response.body;
-      console.log(response);
+    this.$http.get(this.$apiPath + "/api/seller", { responseType: "json" }).then(response => {
+      response = response.body;
       this.seller = response;
       if (response.errno === ERR_OK) {
         this.seller = response.data;

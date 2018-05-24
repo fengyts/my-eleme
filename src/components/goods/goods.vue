@@ -49,7 +49,7 @@ import BScroll from "better-scroll";
 import shopcart from "../../components/shopcart/shopcart";
 import cartcontrol from "../../components/cartcontrol/cartcontrol";
 
-const ERR_OK = 0;
+const ERR_OK = 1;
 
 export default {
   props: {
@@ -91,7 +91,7 @@ export default {
   created() {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
 
-    this.$http.get("/api/goods",{responseType:'text'}).then(response => {
+    this.$http.get("/api/goods", { responseType: "json" }).then(response => {
       response = response.body;
       if (response.errno === ERR_OK) {
         this.goods = response.data;
