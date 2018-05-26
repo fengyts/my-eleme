@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="shopcart">
-    <div class="content">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -17,10 +17,30 @@
         <div class="pay" :class="payClass">{{payDesc}}</div>
       </div>
     </div>
+    <div class="shopcart-list" v-show="listShow">
+      <div class="list-header">
+        <h1 class="title">购物车</h1>
+        <span class="empty">清空</span>
+      </div>
+      <div class="list-content">
+        <ul>
+          <li class="food" v-for="food in selectFoods">
+            <span class="name">{{food.name}}</span>
+            <div class="price">
+              <span>￥{{food.price*food.count}}</span>
+            </div>
+            <div class="cartcontrol-wrapper">
+              <cartcontrol :food="food"></cartcontrol>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/javascript">
+import cartcontrol from "../../components/cartcontrol/cartcontrol";
 export default {
   props: {
     deliveryPrice: {
@@ -40,7 +60,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      fold: true
+    };
   },
   computed: {
     totalPrice() {
@@ -75,7 +97,26 @@ export default {
       } else {
         return "enough";
       }
+    },
+    listShow() {
+      if (!this.totalCount) {
+        this.fold = true;
+        return false;
+      }
+      let show = !this.fold;
+      return show;
     }
+  },
+  methods: {
+    toggleList() {
+      if (!this.totalCount) {
+        return;
+      }
+      this.fold = !this.fold;
+    }
+  },
+  components: {
+    cartcontrol
   }
 };
 </script>
@@ -169,4 +210,24 @@ export default {
         &.enough
           background: #00b43c;
           color: #fff;
+  .shopcart-list
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    .list-header
+      height: 40;
+      line-height: 40px;
+      padding: 0 18px;
+      background: #f3f5f7;
+      border-bottom: solid 1px rgba(7, 17, 27, 0.1);
+      .title
+        float: right;
+        font-size: 14px;
+        color: rgb(7, 17, 27);
+      .empty
+        float: right;
+        font-size: 12px;
+        color: rgb(0, 160, 220);
 </style>
