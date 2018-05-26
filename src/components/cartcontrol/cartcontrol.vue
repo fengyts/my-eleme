@@ -7,7 +7,7 @@
       </div>
     </transition>
     <div class="cart-count" v-show="food.count>0">{{food.count}}</div>
-    <div class="cart-add icon-add_circle" @click="addCart($event)"></div>
+    <div class="cart-add icon-add_circle" @click="addCart($event)" ref="addCart"></div>
   </div>
 </template>
 
@@ -34,6 +34,9 @@ export default {
       } else {
         this.food.count++;
       }
+      // 添加购物车绑定事件
+      // this.$dispatch('cart-add', event.target); // vue 1.0
+      this.$emit('cart-add', event.target); // vue2 通过$emit来触发自定义事件
     },
     decreaseCart(event) {
       if (!event._constructed) {

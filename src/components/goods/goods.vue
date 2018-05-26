@@ -32,7 +32,7 @@
                   <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food" v-on:cart-add="_drop"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -40,7 +40,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ import BScroll from "better-scroll";
 import shopcart from "../../components/shopcart/shopcart";
 import cartcontrol from "../../components/cartcontrol/cartcontrol";
 
-const ERR_OK = 0;
+const ERR_OK = 1;
 
 export default {
   props: {
@@ -91,7 +91,7 @@ export default {
   created() {
     this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
 
-    this.$http.get("/api/goods",{responseType:'text'}).then(response => {
+    this.$http.get("/api/goods", { responseType: "json" }).then(response => {
       response = response.body;
       if (response.errno === ERR_OK) {
         this.goods = response.data;
@@ -103,6 +103,7 @@ export default {
         });
       }
     });
+
   },
   methods: {
     /** 滚动效果函数，使用better-scroll第三方插件实现 */
@@ -147,12 +148,22 @@ export default {
       );
       let el = foodList[index];
       this.foodsScroll.scrollToElement(el, 300);
+    },
+    // 向shopcart组件传递事件
+    _drop(target) {
+      this.$refs.shopcart.drop(target);
     }
   },
   components: {
     shopcart,
     cartcontrol
-  }
+  },
+  // vue2.0 移除events选项，通过在子组件cartcontroller 使用v-on指令来监听子组件$emit绑定的事件
+  // events: {
+  //   "cart-add"(target) {
+  //     this._drop(target);
+  //   }
+  // }
 };
 </script>
 
