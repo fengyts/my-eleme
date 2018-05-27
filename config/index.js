@@ -3,7 +3,8 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require('path')
-const apiUrl = "http://localhost:8081/checc-front/"
+// const apiUrl = "http://localhost:8081/checc-front/"
+const apiUrl = "http://www.checc.cc"
 
 module.exports = {
   dev: {
@@ -13,7 +14,6 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api/**': {
-        // target: "http://localhost:8081/checc-front/", // 接口地址
         target: apiUrl, // 接口地址
         secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置

@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="shopcart">
-    <div class="content" @click="toggleList">
+    <div class="content">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -24,30 +24,12 @@
         </transition-group>
       </div>
     </div>
-    <div class="shopcart-list" v-show="listShow">
-      <div class="list-header">
-        <h1 class="title">购物车</h1>
-        <span class="empty">清空</span>
-      </div>
-      <div class="list-content">
-        <ul>
-          <li class="food" v-for="food in selectFoods">
-            <span class="name">{{food.name}}</span>
-            <div class="price">
-              <span>￥{{food.price*food.count}}</span>
-            </div>
-            <div class="cartcontrol-wrapper">
-              <cartcontrol :food="food"></cartcontrol>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 </template>
 
 <script type="text/javascript">
 import cartcontrol from "../../components/cartcontrol/cartcontrol";
+
 export default {
   props: {
     deliveryPrice: {
@@ -113,37 +95,17 @@ export default {
       } else {
         return "enough";
       }
-    },
-    listShow() {
-      if (!this.totalCount) {
-        this.fold = true;
-        return false;
-      }
-      let show = !this.fold;
-      return show;
     }
   },
   methods: {
     drop(el) {
-      for (let i = 0; i < this.balls.length; i++) {
-        let ball = this.balls[i];
-        if (!ball.show) {
-          ball.show = true;
-          ball.el = el;
-          this.dropBalls.push(ball);
-          return;
-        }
-      }
+      // console.log(el);
     },
     toggleList() {
       if (!this.totalCount) {
         return;
       }
       this.fold = !this.fold;
-    }
-  },
-  components: {
-    cartcontrol
     },
     hideList() {
       this.fold = true;
@@ -160,45 +122,10 @@ export default {
       window.alert(`支付${this.totalPrice}元`);
     }
   },
-  transitions: {
-    drop: {
-      beforeEnter(el) {
-        let count = this.balls.length;
-        while (count--) {
-          let ball = this.balls[count];
-          if (ball.show) {
-            let rect = ball.el.getBoundingClientRect();
-            let x = rect.left - 32;
-            let y = -(window.innerHeight - rect.top - 22);
-            el.style.display = "";
-            el.style.webkitTransform = `translate3d(0,${y}px,0)`;
-            el.style.transform = `translate3d(0,${y}px,0)`;
-            let inner = el.getElementsByClassName("inner-hook")[0];
-            inner.style.webkitTransform = `translate3d(${x}px,0,0)`;
-            inner.style.transform = `translate3d(${x}px,0,0)`;
-          }
-        }
-      },
-      enter(el) {
-        /* eslint-disable no-unused-vars */
-        let rf = el.offsetHeight;
-        this.$nextTick(() => {
-          el.style.webkitTransform = "translate3d(0,0,0)";
-          el.style.transform = "translate3d(0,0,0)";
-          let inner = el.getElementsByClassName("inner-hook")[0];
-          inner.style.webkitTransform = "translate3d(0,0,0)";
-          inner.style.transform = "translate3d(0,0,0)";
-        });
-      },
-      afterEnter(el) {
-        let ball = this.dropBalls.shift();
-        if (ball) {
-          ball.show = false;
-          el.style.display = "none";
-        }
-      }
-    }
+  components: {
+    cartcontrol
   }
+
 };
 </script>
 

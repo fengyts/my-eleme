@@ -13,9 +13,7 @@ Vue.use(VueResource);
 
 //自定义全局接口地址
 // Vue.http.options.root = '/root';
-// Vue.http.options.root = process.env.NODE_ENV === 'production' ? 'http://www.checc.cc' : 'http://localhost:8089/checc-front';
 Vue.prototype.$apiPath = process.env.NODE_ENV === 'production' ? 'http://www.checc.cc/myelemeApi' : 'http://localhost:8089/checc-front';
-// Vue.prototype.$apiPath = process.env.API_URL;
 
 Vue.config.productionTip = false
 
